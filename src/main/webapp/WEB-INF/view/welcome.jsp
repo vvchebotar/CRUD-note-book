@@ -15,7 +15,7 @@
     <h1>${greeting}</h1>
     <h2>${tagline}</h2>
     <h2>
-        <a href="<spring:url value="/books" />"
+        <a href="<spring:url value="/books/page?page=1"/>"
            class="btn btn-primary"> <span class="glyphicon-hand-left glyphicon">
 			</span> Books
         </a>

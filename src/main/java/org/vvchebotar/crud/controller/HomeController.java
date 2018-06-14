@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class HomeController {
 
-    @RequestMapping
+    @RequestMapping("/")
     public String home() {
         return "forward:/welcome";
     }
@@ -30,7 +30,7 @@ public class HomeController {
          * to save variables for jsp
          */
         model.addAttribute("greeting", "Welcome to Crud Test Task developed by Victor Chebotar!");
-        model.addAttribute("tagline", "Click link to access the books list");
+        model.addAttribute("tagline", "Click link below to access the books list");
         return "welcome";
     }
 

@@ -28,12 +28,13 @@ public class DBUtils {
                     + "title_clmn VARCHAR(40) NOT NULL, " + "description_clmn VARCHAR(200), "
                     + "author_clmn VARCHAR(40) NOT NULL, isbn_clmn VARCHAR(13) NOT NULL, " +
                     "print_year_clmn INT, read_already_clmn BOOLEAN NOT NULL DEFAULT FALSE" + ")");
-            statement.executeUpdate(
-                    "INSERT INTO book" + "(title_clmn, description_clmn, author_clmn, isbn_clmn, print_year_clmn, read_already_clmn)" + "VALUES "
-                            + "('book_1', 'description_1', 'author_1', 'isbn_1', 1901 )");
-            statement.executeUpdate(
-                    "INSERT INTO book" + "(title_clmn, description_clmn, author_clmn, isbn_clmn, print_year_clmn, read_already_clmn)" + "VALUES "
-                            + "('book_2', 'description_2', 'author_2', 'isbn_2', 1902 )");
+            for(int i = 1;i<36;i++) {
+                statement.executeUpdate(
+                        "INSERT INTO book" + "(title_clmn, description_clmn, author_clmn, isbn_clmn, print_year_clmn)" + "VALUES "
+                                + "('book_"+ i +"', 'description_"+ i +"', 'author_"+ i +"', 'isbn_"+ i +"', 19"+ (i+10) +" )");
+            }
+
+
 
             /**
              * ContactCard_INFO

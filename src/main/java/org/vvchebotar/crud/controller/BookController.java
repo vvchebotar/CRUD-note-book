@@ -1,35 +1,68 @@
 package org.vvchebotar.crud.controller;
 
+import net.bytebuddy.implementation.bind.annotation.Default;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.vvchebotar.crud.domain.Book;
-import org.vvchebotar.crud.service.GenericService;
+import org.vvchebotar.crud.service.BookService;
 
-import java.time.LocalDate;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/books")
 public class BookController {
     @Autowired
-    private GenericService genericService;
+    private BookService bookService;
 
-    @RequestMapping("/all")
-    public String list(Model model) {
-        Book book = new Book();
-        book.setAuthor("Author");
-        book.setDescription("Description");
-        book.setId(1L);
-        book.setIsbn("123");
-        book.setPrintYear(2000);
-        book.setReadAlready(false);
-        book.setTitle("Title");
+    @RequestMapping("/book")
+    public String list(@RequestParam String id, @RequestParam String currentPage, Model model) {
+        Book book = bookService.getBookById(id);
         model.addAttribute("book", book);
+        model.addAttribute("currentPage",currentPage);
+        return "book";
+    }
+
+    @RequestMapping("/page")
+    public String page(@RequestParam String page, Model model) {
+//        if(page==null||page.isEmpty()){
+//            page="1";
+//        }
+        model.addAttribute("books", bookService.readPageNumber(page));
+
+        List<String> pages = new ArrayList();
+        pages.add("1");
+        int numberOfBooks = bookService.getAllBooksCount();
+        int numberOfPages = numberOfBooks / 10 + 1;
+        if (numberOfBooks > 1) {
+            for (int i = 2; i <= numberOfPages; i++) {
+                pages.add(String.valueOf(i));
+            }
+        }
+        model.addAttribute("pages", pages);
+        model.addAttribute("currentPage",page);
         return "books";
     }
 
-    @RequestMapping("/addBook")
+    @RequestMapping("/remove")
+    public String remove(@RequestParam String id, @RequestParam String currentPage) {
+        bookService.deleteById(id);
+        return "forward:/books/page?page=" + currentPage;
+    }
+
+    @RequestMapping("/mark")
+    public String marc(@RequestParam String id, @RequestParam String currentPage) {
+        bookService.markById(id);
+        return "forward:/books/page?page=" + currentPage;
+    }
+
+    @RequestMapping("/addBook")//<<----------------------- удалить
     public String addBook(Model model) {
         Book book = new Book();
         book.setAuthor("Author2");
@@ -39,8 +72,41 @@ public class BookController {
         book.setPrintYear(2000);
         book.setReadAlready(false);
         book.setTitle("Title1");
-        genericService.create(book);
+        bookService.create(book);
         return "books";
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String getAddNewBookForm(@RequestParam String currentPage, Model model) {
+        Book newBook = new Book();
+        model.addAttribute("newBook", newBook);
+        model.addAttribute("currentPage",currentPage);
+        return "addBook";
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String processAddNewBookForm(@ModelAttribute("newBook") Book newBook, @RequestParam String currentPage) {
+        newBook.setReadAlready(false);
+        bookService.create(newBook);
+        return "redirect:/books/page?page=" + currentPage;
+    }
+
+
+    @RequestMapping(value = "/edit", method = RequestMethod.GET)
+    public String getEditBookForm(@RequestParam String id, @RequestParam String currentPage, Model model) {
+        Book editBook = bookService.getBookById(id);
+        model.addAttribute("editBook", editBook);
+        model.addAttribute("currentPage",currentPage);
+        return "editBook";
+    }
+
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public String processEditBookForm(@ModelAttribute("editBook") Book editBook, @RequestParam String id, @RequestParam String author, @RequestParam String currentPage) {
+        editBook.setReadAlready(false);
+        editBook.setId(Long.parseLong(id));
+        editBook.setAuthor(author);
+        bookService.update(editBook);
+        return "redirect:/books/page?page="+currentPage;
     }
 
 }
