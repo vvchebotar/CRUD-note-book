@@ -2,6 +2,7 @@ package org.vvchebotar.crud.dao;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.*;
 import org.hibernate.criterion.Projections;
@@ -133,6 +134,25 @@ public class BookDaoImp implements BookDao {
             session.close();
         }
         return book;
+    }
+
+    @Override
+    public List<Book> getBooksByFilter(String searchFromYear, String searchToYear) {
+        Session session = sessionFactory.openSession();
+        List<Book> bookList = null;
+        try {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(Book.class)
+                    .add(Restrictions.le("printYear",Integer.parseInt(searchToYear)))
+                    .add(Restrictions.ge("printYear",Integer.parseInt(searchFromYear)));
+            bookList = criteria.list();
+        } catch (HibernateException e) {
+            Transaction tx = session.getTransaction();
+            if (tx.isActive()) {tx.rollback();}
+        } finally {
+            session.close();
+        }
+        return bookList;
     }
 
 

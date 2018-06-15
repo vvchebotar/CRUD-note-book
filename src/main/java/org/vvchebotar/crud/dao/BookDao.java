@@ -4,6 +4,7 @@ import org.vvchebotar.crud.domain.Book;
 
 import javax.persistence.Query;
 import java.util.List;
+import java.util.Map;
 
 public interface BookDao extends GenericDao <Book, Long> {
     void refreshBook(Book book);
@@ -17,4 +18,7 @@ public interface BookDao extends GenericDao <Book, Long> {
     void deleteById(String id);
 
     Book getById(String id);
+
+    List<Book> getBooksByFilter(String searchFromYear, String searchToYear);
+
 }

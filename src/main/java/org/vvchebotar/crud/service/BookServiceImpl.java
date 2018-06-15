@@ -5,6 +5,7 @@ import org.vvchebotar.crud.dao.BookDao;
 import org.vvchebotar.crud.domain.Book;
 
 import java.util.List;
+import java.util.Map;
 
 public class BookServiceImpl implements BookService {
 	@Autowired
@@ -69,4 +70,9 @@ public class BookServiceImpl implements BookService {
     public void refreshBook(Book book) {
 	    bookDAO.refreshBook(book);
     }
+
+	@Override
+	public List<Book> getBooksByYear(String searchFromYear, String searchToYear ){
+				return bookDAO.getBooksByFilter(searchFromYear,searchToYear);
+	}
 }
