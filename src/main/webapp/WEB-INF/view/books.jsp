@@ -86,16 +86,23 @@
                             </a>
                         </p>
                         <p>
-                            <a href=" <spring:url value="/books/mark?id=${book.id}&currentPage=${currentPage}" /> "
-                               class="btn btn-primary">
-                                <span class="glyphicon glyphicon-ok"> Mark </span>
-                            </a>
+                            <c:if test="${book.readAlready}">
+                                <a href=" <spring:url value="/books/mark?id=${book.id}&currentPage=${currentPage}" /> "
+                                   class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-ok" style="color: green;"> Marked </span>
+                                </a>
+                            </c:if>
+                            <c:if test="${book.readAlready eq false}">
+                                <a href=" <spring:url value="/books/mark?id=${book.id}&currentPage=${currentPage}" /> "
+                                   class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-ok" style="color: orange;"> Unmarked </span>
+                                </a>
+                            </c:if>
                         </p>
                         <p>
                             <a href=" <spring:url value="/books/remove?id=${book.id}&currentPage=${currentPage}" /> "
                                class="btn btn-primary" style="color: black;">
-                                                            <span class="glyphicon glyphicon-trash"
-                                                                  style="color: red;"/> Delete
+                                <span class="glyphicon glyphicon-trash" style="color: red;"/> Delete
                             </a>
                         </p>
                     </div>

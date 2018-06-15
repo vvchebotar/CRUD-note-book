@@ -21,19 +21,23 @@ public class BookController {
         List<Book> books = bookService.getBooksByPage(page);
         model.addAttribute("books", books);
 
+        List<String> pages = getPagesList();
+        model.addAttribute("pages", pages);
+        model.addAttribute("currentPage", page);
+        return "books";
+    }
+
+    private List<String> getPagesList() {
         List<String> pages = new ArrayList();
         pages.add("1");
         int numberOfBooks = bookService.getAllBooksCount();
-        //int numberOfBooks = 35;
         int numberOfPages = numberOfBooks / 10 + 1;
         if (numberOfBooks > 1) {
             for (int i = 2; i <= numberOfPages; i++) {
                 pages.add(String.valueOf(i));
             }
         }
-        model.addAttribute("pages", pages);
-        model.addAttribute("currentPage", page);
-        return "books";
+        return pages;
     }
 
     @RequestMapping("/book")
@@ -51,7 +55,7 @@ public class BookController {
     }
 
     @RequestMapping("/mark")
-    public String marc(@RequestParam String id, @RequestParam String currentPage) {
+    public String mark(@RequestParam String id, @RequestParam String currentPage) {
         bookService.markBookById(id);
         return "forward:/books/page?page=" + currentPage;
     }

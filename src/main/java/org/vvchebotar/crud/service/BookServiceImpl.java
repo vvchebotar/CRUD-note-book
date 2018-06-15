@@ -59,8 +59,11 @@ public class BookServiceImpl implements BookService {
     public void markBookById(String id) {
         Book book = bookDAO.getBookById(id);
         if (book != null) {
-            book.setReadAlready(true);
-            book.setAuthor("updatedMark");//<-----------------delete
+            if(book.getReadAlready()){
+                book.setReadAlready(false);
+            } else {
+                book.setReadAlready(true);
+            }
             bookDAO.update(book);
         }
     }

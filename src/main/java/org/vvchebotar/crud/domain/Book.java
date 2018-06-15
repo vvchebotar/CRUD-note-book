@@ -110,7 +110,7 @@ public class Book implements Serializable {
         this.printYear = printYear;
     }
 
-    public Boolean isReadAlready() {
+    public Boolean getReadAlready() {
         return readAlready;
     }
 
@@ -152,7 +152,7 @@ public class Book implements Serializable {
                 ", author='" + getAuthor() + "'" +
                 ", isbn=" + getIsbn() +
                 ", printYear='" + getPrintYear() + "'" +
-                ", readAlready='" + isReadAlready() + "'" +
+                ", readAlready='" + getReadAlready() + "'" +
                 "}";
     }
 }
