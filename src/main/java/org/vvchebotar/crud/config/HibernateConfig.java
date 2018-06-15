@@ -25,20 +25,19 @@ public class HibernateConfig {
     @Autowired
     private Environment environment;
 
-
-    @Bean (name = "dataSource")
+    @Bean(name = "dataSource")
     public DataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(environment.getRequiredProperty("ds.database-driver"));
         dataSource.setUrl(environment.getRequiredProperty("ds.url"));
         dataSource.setUsername(environment.getRequiredProperty("ds.username"));
         dataSource.setPassword(environment.getRequiredProperty("ds.password"));
-               return dataSource;
+        return dataSource;
     }
 
     @Autowired
     @Bean(name = "sessionFactory")
-    public SessionFactory sessionFactory(DataSource dataSource)  throws IOException {
+    public SessionFactory sessionFactory(DataSource dataSource) throws IOException {
         LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
         factoryBean.setDataSource(dataSource);
         factoryBean.setPackagesToScan("org.vvchebotar.crud.domain");
@@ -53,12 +52,6 @@ public class HibernateConfig {
         properties.put("hibernate.dialect", environment.getProperty("hibernate.dialect"));
         properties.put("hibernate.show_sql", environment.getProperty("hibernate.show_sql"));
         properties.put("current_session_context_class", environment.getProperty("current_session_context_class"));
-
-        /*properties.put("hibernate.format_sql", environment.getProperty("hibernate.format_sql"));
-        properties.put("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"));
-        properties.put("hibernate.max_fetch_depth", environment.getProperty("hibernate.max_fetch_depth"));
-        properties.put("hibernate.jdbc.fetch_size", environment.getProperty("hibernate.jdbc.fetch_size"));
-        properties.put("hibernate.jdbc.batch_size", environment.getProperty("hibernate.jdbc.batch_size"));*/
         return properties;
     }
 

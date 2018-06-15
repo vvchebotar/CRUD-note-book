@@ -1,6 +1,5 @@
 package org.vvchebotar.crud.controller;
 
-import net.bytebuddy.implementation.bind.annotation.Default;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,10 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import org.vvchebotar.crud.domain.Book;
 import org.vvchebotar.crud.service.BookService;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/books")
@@ -19,20 +16,9 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
-    @RequestMapping("/book")
-    public String list(@RequestParam String id, @RequestParam String currentPage, Model model) {
-        Book book = bookService.getBookById(id);
-        model.addAttribute("book", book);
-        model.addAttribute("currentPage", currentPage);
-        return "book";
-    }
-
     @RequestMapping("/page")
     public String page(@RequestParam String page, Model model) {
-//        if(page==null||page.isEmpty()){
-//            page="1";
-//        }
-        List<Book> books = bookService.readPageNumber(page);
+        List<Book> books = bookService.getBooksByPage(page);
         model.addAttribute("books", books);
 
         List<String> pages = new ArrayList();
@@ -50,30 +36,24 @@ public class BookController {
         return "books";
     }
 
+    @RequestMapping("/book")
+    public String list(@RequestParam String id, @RequestParam String currentPage, Model model) {
+        Book book = bookService.getBookById(id);
+        model.addAttribute("book", book);
+        model.addAttribute("currentPage", currentPage);
+        return "book";
+    }
+
     @RequestMapping("/remove")
     public String remove(@RequestParam String id, @RequestParam String currentPage) {
-        bookService.deleteById(id);
+        bookService.deleteBookById(id);
         return "forward:/books/page?page=" + currentPage;
     }
 
     @RequestMapping("/mark")
     public String marc(@RequestParam String id, @RequestParam String currentPage) {
-        bookService.markById(id);
+        bookService.markBookById(id);
         return "forward:/books/page?page=" + currentPage;
-    }
-
-    @RequestMapping("/addBook")//<<----------------------- удалить
-    public String addBook(Model model) {
-        Book book = new Book();
-        book.setAuthor("Author2");
-        book.setDescription("Description2");
-        book.setId(2L);
-        book.setIsbn("124");
-        book.setPrintYear(2000);
-        book.setReadAlready(false);
-        book.setTitle("Title1");
-        bookService.create(book);
-        return "books";
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
@@ -111,13 +91,13 @@ public class BookController {
 
     @RequestMapping("/filter")
     public String getProductsByFilter(@RequestParam String searchFromYear, @RequestParam String searchToYear, Model model) {
-        if(searchFromYear==null||searchFromYear.isEmpty()){//||"".equals(searchFromYear)
-            searchFromYear="-9999";
+        if (searchFromYear == null || searchFromYear.isEmpty()) {
+            searchFromYear = "-9999";
         }
-        if(searchToYear==null||searchToYear.isEmpty()){
-            searchToYear="9999";
+        if (searchToYear == null || searchToYear.isEmpty()) {
+            searchToYear = "9999";
         }
-        List<Book> books = bookService.getBooksByYear(searchFromYear,searchToYear);
+        List<Book> books = bookService.getBooksByYear(searchFromYear, searchToYear);
         model.addAttribute("books", books);
         model.addAttribute("pages", "1");
         model.addAttribute("currentPage", "1");

@@ -21,7 +21,7 @@ public class DBUtils {
             Statement statement = connection.createStatement();
 
             /**
-             * Person_INFO
+             * The book table
              */
             statement.execute("DROP TABLE IF EXISTS book");
             statement.executeUpdate("CREATE TABLE book(" + "ID SERIAL NOT NULL PRIMARY KEY, "
@@ -34,6 +34,7 @@ public class DBUtils {
                         "INSERT INTO book" + "(title_clmn, description_clmn, author_clmn, isbn_clmn, print_year_clmn)" + "VALUES "
                                 + "('book_" + i + "', 'description_" + i + "', 'author_" + i + "', 'isbn_" + i + "', 19" + (i + 10) + " )");
             }
+
             statement.close();
             connection.close();
         } catch (SQLException e) {

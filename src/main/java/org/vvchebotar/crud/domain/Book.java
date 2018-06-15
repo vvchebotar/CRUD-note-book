@@ -4,7 +4,6 @@ package org.vvchebotar.crud.domain;
 import javax.persistence.*;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -38,7 +37,6 @@ public class Book implements Serializable {
     @Column(name = "read_already_clmn")
     private Boolean readAlready;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -124,7 +122,6 @@ public class Book implements Serializable {
     public void setReadAlready(Boolean readAlready) {
         this.readAlready = readAlready;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
