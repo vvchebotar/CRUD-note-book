@@ -3,7 +3,10 @@ package org.vvchebotar.crud.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.vvchebotar.crud.domain.Book;
 import org.vvchebotar.crud.service.BookService;
 
@@ -13,6 +16,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/books")
 public class BookController {
+    public static final int BOOKS_PER_PAGE = 10;
+
     @Autowired
     private BookService bookService;
 
@@ -27,19 +32,6 @@ public class BookController {
         return "books";
     }
 
-    private List<String> getPagesList() {
-        List<String> pages = new ArrayList();
-        pages.add("1");
-        int numberOfBooks = bookService.getAllBooksCount();
-        int numberOfPages = numberOfBooks / 10 + 1;
-        if (numberOfBooks > 1) {
-            for (int i = 2; i <= numberOfPages; i++) {
-                pages.add(String.valueOf(i));
-            }
-        }
-        return pages;
-    }
-
     @RequestMapping("/book")
     public String list(@RequestParam String id, @RequestParam String currentPage, Model model) {
         Book book = bookService.getBookById(id);
@@ -51,13 +43,13 @@ public class BookController {
     @RequestMapping("/remove")
     public String remove(@RequestParam String id, @RequestParam String currentPage) {
         bookService.deleteBookById(id);
-        return "forward:/books/page?page=" + currentPage;
+        return "redirect:/books/page?page=" + currentPage;
     }
 
     @RequestMapping("/mark")
     public String mark(@RequestParam String id, @RequestParam String currentPage) {
         bookService.markBookById(id);
-        return "forward:/books/page?page=" + currentPage;
+        return "redirect:/books/page?page=" + currentPage;
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
@@ -106,5 +98,18 @@ public class BookController {
         model.addAttribute("pages", "1");
         model.addAttribute("currentPage", "1");
         return "books";
+    }
+
+    private List<String> getPagesList() {
+        List<String> pages = new ArrayList<>();
+        pages.add("1");
+        int numberOfBooks = bookService.getAllBooksCount();
+        int numberOfPages = numberOfBooks / BOOKS_PER_PAGE + 1;
+        if (numberOfBooks > 1) {
+            for (int i = 2; i <= numberOfPages; i++) {
+                pages.add(String.valueOf(i));
+            }
+        }
+        return pages;
     }
 }

@@ -1,25 +1,26 @@
 package org.vvchebotar.crud.dao;
 
-import java.util.List;
-
 import org.hibernate.*;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.vvchebotar.crud.domain.Book;
 
+import java.util.List;
+
 @Repository
 @Primary
 @Transactional(readOnly = true)
 public class BookDaoImp implements BookDao {
+    public static final int BOOKS_PER_PAGE = 10;
+
     @Autowired
     private SessionFactory sessionFactory;
 
-    @Transactional(readOnly = false)
+    @Transactional
     @Override
     public Long create(Book b) {
         return (Long) sessionFactory.openSession().save(b);
@@ -35,16 +36,14 @@ public class BookDaoImp implements BookDao {
             session.getTransaction().commit();
         } catch (HibernateException e) {
             Transaction tx = session.getTransaction();
-            if (tx.isActive()) {
-                tx.rollback();
-            }
+            tx.rollback();
         } finally {
             session.close();
         }
         return book;
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
     @Override
     public void update(Book book) {
         Session session = sessionFactory.openSession();
@@ -54,15 +53,13 @@ public class BookDaoImp implements BookDao {
             session.getTransaction().commit();
         } catch (HibernateException e) {
             Transaction tx = session.getTransaction();
-            if (tx.isActive()) {
-                tx.rollback();
-            }
+            tx.rollback();
         } finally {
             session.close();
         }
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
     @Override
     public void delete(Book book) {
         Session session = sessionFactory.openSession();
@@ -72,9 +69,7 @@ public class BookDaoImp implements BookDao {
             session.getTransaction().commit();
         } catch (HibernateException e) {
             Transaction tx = session.getTransaction();
-            if (tx.isActive()) {
-                tx.rollback();
-            }
+            tx.rollback();
         } finally {
             session.close();
         }
@@ -89,8 +84,8 @@ public class BookDaoImp implements BookDao {
     @Override
     public List<Book> getBooksByPage(String pageNumber) {
         Criteria criteria = sessionFactory.openSession().createCriteria(Book.class);
-        criteria.setFirstResult((Integer.parseInt(pageNumber) - 1) * 10);
-        criteria.setMaxResults(10);
+        criteria.setFirstResult((Integer.parseInt(pageNumber) - 1) * BOOKS_PER_PAGE)
+                .setMaxResults(BOOKS_PER_PAGE);
         return criteria.list();
     }
 
@@ -103,16 +98,14 @@ public class BookDaoImp implements BookDao {
             book = (Book) session.createCriteria(Book.class).add(Restrictions.eq("id", Long.parseLong(id))).uniqueResult();
         } catch (HibernateException e) {
             Transaction tx = session.getTransaction();
-            if (tx.isActive()) {
-                tx.rollback();
-            }
+            tx.rollback();
         } finally {
             session.close();
         }
         return book;
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
     @Override
     public void deleteBookById(String id) {
         Session session = sessionFactory.openSession();
@@ -125,9 +118,7 @@ public class BookDaoImp implements BookDao {
             session.getTransaction().commit();
         } catch (HibernateException e) {
             Transaction tx = session.getTransaction();
-            if (tx.isActive()) {
-                tx.rollback();
-            }
+            tx.rollback();
         } finally {
             session.close();
         }
@@ -145,9 +136,7 @@ public class BookDaoImp implements BookDao {
             bookList = criteria.list();
         } catch (HibernateException e) {
             Transaction tx = session.getTransaction();
-            if (tx.isActive()) {
-                tx.rollback();
-            }
+            tx.rollback();
         } finally {
             session.close();
         }

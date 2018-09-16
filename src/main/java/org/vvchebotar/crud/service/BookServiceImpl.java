@@ -1,11 +1,16 @@
 package org.vvchebotar.crud.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.vvchebotar.crud.dao.BookDao;
 import org.vvchebotar.crud.domain.Book;
 
 import java.util.List;
 
+import static java.util.Objects.isNull;
+
+@Service
 public class BookServiceImpl implements BookService {
     @Autowired
     private BookDao bookDAO;
@@ -55,18 +60,21 @@ public class BookServiceImpl implements BookService {
         bookDAO.deleteBookById(id);
     }
 
+    @Transactional
     @Override
     public void markBookById(String id) {
         Book book = bookDAO.getBookById(id);
-        if (book != null) {
-            if(book.getReadAlready()){
-                book.setReadAlready(false);
-            } else {
-                book.setReadAlready(true);
-            }
-            bookDAO.update(book);
+        if (isNull(book)) {
+            return;
         }
+        if (book.getReadAlready()) {
+            book.setReadAlready(false);
+        } else {
+            book.setReadAlready(true);
+        }
+        bookDAO.update(book);
     }
+
 
     @Override
     public int getAllBooksCount() {
