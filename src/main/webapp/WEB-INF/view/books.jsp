@@ -33,8 +33,7 @@
                         <fieldset>
                             <div class="form-group">
                                 <label class="control-label col-*-1" for="searchFromYear">
-                                    <p><spring:message code="addBook.form.minprintyear.label"/></p>
-
+                                    <spring:message code="addBook.form.minprintyear.label"/>
                                 </label>
                                 <div class="col-*-2">
                                     <input id="searchFromYear" name="searchFromYear" type="text"
@@ -43,9 +42,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-*-1" for="searchToYear">
-                                    <p>
-                                        <spring:message code="addBook.form.maxprintyear.label"/>
-                                    </p>
+                                    <spring:message code="addBook.form.maxprintyear.label"/>
                                 </label>
                                 <div class="col-*-2">
                                     <input id="searchToYear" name="searchToYear" type="text" class="form:input-medium"/>
@@ -63,19 +60,19 @@
         </div>
     </div>
 </section>
-<section class=" container        ">
+<section class="container">
     <div class="row">
         <c:forEach items="${books}" var="book">
             <div class="col-sm-6 col-md-3 text-center" style="padding-bottom: 15px">
                 <div class="thumbnail">
+                    <jsp:useBean id="book" type="org.vvchebotar.crud.domain.Book "/>
                     <div class="caption justify-content-center">
                         <h3>${book.title}</h3>
                         <p>${book.author}</p>
                         <p>${book.printYear}</p>
                         <p>
                             <a href=" <spring:url value="/books/book?id=${book.id}&currentPage=${currentPage}" /> "
-                               class="btn btn-primary"> <span
-                                    class="glyphicon-info-sign glyphicon"/></span>
+                               class="btn btn-primary"> <span class="glyphicon-info-sign glyphicon"/>
                                 Description
                             </a>
                         </p>

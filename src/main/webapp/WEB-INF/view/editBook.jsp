@@ -33,7 +33,7 @@
                     <spring:message code="addBook.form.title.label"/>
                 </label>
                 <div class="col-lg-10">
-                    <form:input id="title" path="title" type="text" class="form:input-large"/>
+                    <form:input id="title" path="title" type="text" class="form:input-large" formenctype="text/plain"/>
                 </div>
             </div>
             <div class="form-group">
