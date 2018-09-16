@@ -2,13 +2,9 @@ package org.vvchebotar.crud.domain;
 
 
 import javax.persistence.*;
-
 import java.io.Serializable;
 import java.util.Objects;
 
-/**
- * A Book.
- */
 @Entity
 @Table(name = "book")
 public class Book implements Serializable {
@@ -132,10 +128,7 @@ public class Book implements Serializable {
             return false;
         }
         Book book = (Book) o;
-        if (book.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), book.getId());
+        return book.getId() != null && getId() != null && Objects.equals(getId(), book.getId());
     }
 
     @Override

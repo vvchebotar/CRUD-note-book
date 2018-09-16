@@ -1,13 +1,13 @@
 package org.vvchebotar.crud.util;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import javax.annotation.PostConstruct;
-import javax.sql.DataSource;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 @Component
 public class DBUtils {
@@ -19,10 +19,6 @@ public class DBUtils {
         try {
             Connection connection = dataSource.getConnection();
             Statement statement = connection.createStatement();
-
-            /**
-             * The book table
-             */
             statement.execute("DROP TABLE IF EXISTS book");
             statement.executeUpdate("CREATE TABLE book(" + "ID SERIAL NOT NULL PRIMARY KEY, "
                     + "title_clmn VARCHAR(40) NOT NULL, " + "description_clmn VARCHAR(200), "

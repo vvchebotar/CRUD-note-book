@@ -22,6 +22,7 @@ import java.util.Properties;
 @PropertySource("classpath:ds-hibernate-cfg.properties")
 @EnableTransactionManagement
 public class HibernateConfig {
+
     @Autowired
     private Environment environment;
 
@@ -43,8 +44,7 @@ public class HibernateConfig {
         factoryBean.setPackagesToScan("org.vvchebotar.crud.domain");
         factoryBean.setHibernateProperties(getHibernateProperties());
         factoryBean.afterPropertiesSet();
-        SessionFactory sf = factoryBean.getObject();
-        return sf;
+        return factoryBean.getObject();
     }
 
     private Properties getHibernateProperties() {
@@ -58,7 +58,6 @@ public class HibernateConfig {
     @Autowired
     @Bean(name = "transactionManager")
     public HibernateTransactionManager getTransactionManager(SessionFactory sessionFactory) {
-        HibernateTransactionManager transactionManager = new HibernateTransactionManager(sessionFactory);
-        return transactionManager;
+        return new HibernateTransactionManager(sessionFactory);
     }
 }

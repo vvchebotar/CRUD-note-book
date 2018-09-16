@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 import org.vvchebotar.crud.dao.BookDao;
@@ -19,13 +19,13 @@ import org.vvchebotar.crud.service.BookServiceImpl;
  * first
  *
  * @author user
- * @EnableWebMvc - to configure the DefaultAnnotationHandlerMapping, AnnotationMethodHandlerAdapter and ExceptionHandlerExceptionResolver
- * @ComponentScan - to force Spring find beans.
+ * "@EnableWebMvc" - to configure the DefaultAnnotationHandlerMapping, AnnotationMethodHandlerAdapter and ExceptionHandlerExceptionResolver
+ * "@ComponentScan" - to force Spring find beans.
  */
 @Configuration
 @EnableWebMvc
 @ComponentScan("org.vvchebotar.crud")
-public class WebApplicationContextConfig extends WebMvcConfigurerAdapter {
+public class WebApplicationContextConfig implements WebMvcConfigurer {
 
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
@@ -50,7 +50,6 @@ public class WebApplicationContextConfig extends WebMvcConfigurerAdapter {
     public BookService getBookService() {
         return new BookServiceImpl();
     }
-
 
     @Bean
     public MessageSource messageSource() {
