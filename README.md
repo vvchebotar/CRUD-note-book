@@ -19,7 +19,7 @@ Represents application for work with book notes.
 
 #### Deployment
 Deployed on the Apache Tomcat 8.0.491.
-Главная страница : '/welcome' '/home' или просто '/' на выбор.
+Main page : '/welcome' '/home' or '/' for chose.
 
 #### Database
 database is dropped on every deploy.
