@@ -10,10 +10,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
-import org.vvchebotar.crud.dao.BookDao;
-import org.vvchebotar.crud.dao.BookDaoImp;
-import org.vvchebotar.crud.service.BookService;
-import org.vvchebotar.crud.service.BookServiceImpl;
 
 /**
  * first
@@ -39,16 +35,6 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
         resolver.setPrefix("/WEB-INF/view/");
         resolver.setSuffix(".jsp");
         return resolver;
-    }
-
-    @Bean(name = "bookDAO")
-    public BookDao getBookDAO() {
-        return new BookDaoImp();
-    }
-
-    @Bean(name = "bookService")
-    public BookService getBookService() {
-        return new BookServiceImpl();
     }
 
     @Bean

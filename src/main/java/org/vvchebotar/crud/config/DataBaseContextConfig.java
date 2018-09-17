@@ -21,7 +21,7 @@ import java.util.Properties;
 @ComponentScan("org.vvchebotar.crud")
 @PropertySource("classpath:ds-hibernate-cfg.properties")
 @EnableTransactionManagement
-public class HibernateConfig {
+public class DataBaseContextConfig {
 
     @Autowired
     private Environment environment;

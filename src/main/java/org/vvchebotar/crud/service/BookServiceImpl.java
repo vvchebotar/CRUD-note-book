@@ -1,6 +1,5 @@
 package org.vvchebotar.crud.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.vvchebotar.crud.dao.BookDao;
@@ -12,8 +11,11 @@ import static java.util.Objects.isNull;
 
 @Service
 public class BookServiceImpl implements BookService {
-    @Autowired
-    private BookDao bookDAO;
+    private final BookDao bookDAO;
+
+    public BookServiceImpl(BookDao bookDAO) {
+        this.bookDAO = bookDAO;
+    }
 
     @Override
     public Long create(Book newInstance) {
