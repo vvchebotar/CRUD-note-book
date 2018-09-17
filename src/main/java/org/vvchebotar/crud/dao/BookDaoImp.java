@@ -10,6 +10,8 @@ import org.vvchebotar.crud.domain.Book;
 
 import java.util.List;
 
+import static java.util.Objects.nonNull;
+
 @Repository
 @Primary
 @Transactional(readOnly = true)
@@ -114,7 +116,7 @@ public class BookDaoImp implements BookDao {
         try {
             session.beginTransaction();
             Book book = (Book) session.createCriteria(Book.class).add(Restrictions.eq("id", Long.parseLong(id))).uniqueResult();
-            if (book != null) {
+            if (nonNull(book)) {
                 session.delete(book);
             }
             session.getTransaction().commit();

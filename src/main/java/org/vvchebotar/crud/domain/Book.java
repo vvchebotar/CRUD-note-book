@@ -128,12 +128,12 @@ public class Book implements Serializable {
             return false;
         }
         Book book = (Book) o;
-        return book.getId() != null && getId() != null && Objects.equals(getId(), book.getId());
+        return book.id != null && id != null && Objects.equals(id, book.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return Objects.hashCode(id);
     }
 
     @Override

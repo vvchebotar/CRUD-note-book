@@ -16,6 +16,8 @@ import java.util.List;
 @RequestMapping("/books")
 public class BookController {
     public static final int BOOKS_PER_PAGE = 10;
+    public static final String DEFAULT_SEARCH_FROM_YEAR = "-9999";
+    public static final String DEFAULT_SEARCH_TO_YEAR = "9999";
 
     private final BookService bookService;
 
@@ -89,17 +91,27 @@ public class BookController {
 
     @RequestMapping("/filter")
     public String getProductsByFilter(@RequestParam String searchFromYear, @RequestParam String searchToYear, Model model) {
-        if (searchFromYear == null || searchFromYear.isEmpty()) {
-            searchFromYear = "-9999";
-        }
-        if (searchToYear == null || searchToYear.isEmpty()) {
-            searchToYear = "9999";
-        }
+        searchFromYear = tryToSetDefaultSearchFromYear(searchFromYear);
+        searchToYear = tryToSetDefaultSearchToYear(searchToYear);
         List<Book> books = bookService.getBooksByYear(searchFromYear, searchToYear);
         model.addAttribute("books", books);
         model.addAttribute("pages", "1");
         model.addAttribute("currentPage", "1");
         return "books";
+    }
+
+    private String tryToSetDefaultSearchFromYear(@RequestParam String searchFromYear) {
+        if (searchFromYear == null || searchFromYear.isEmpty()) {
+            searchFromYear = DEFAULT_SEARCH_FROM_YEAR;
+        }
+        return searchFromYear;
+    }
+
+    private String tryToSetDefaultSearchToYear(@RequestParam String searchToYear) {
+        if (searchToYear == null || searchToYear.isEmpty()) {
+            searchToYear = DEFAULT_SEARCH_TO_YEAR;
+        }
+        return searchToYear;
     }
 
     private List<String> getPagesList() {
